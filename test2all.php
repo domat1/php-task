@@ -9,8 +9,11 @@ function get_news($connection)
     $news = $connection->prepare('SELECT id, title, date, text FROM news');
     $news->execute();
     $result = $news->FetchAll(PDO::FETCH_ASSOC);
+    foreach( $result as $all ){
+        print_r( $all );
+    }
     header('Content-Type: application/json');
-    echo json_encode($result[1]);
+    echo json_encode($all);
 }
 
 $domat = get_news($connection);
