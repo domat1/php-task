@@ -1,14 +1,21 @@
 <?php
+$router = array();
 
-try {
-    $db = new PDO('mysql:host=localhost;dbname=test', 'root', 'usbw');
-} catch (PDOException $e) {
-    echo $e->getMessage()."<br>";
-    die();
+$router['news'] = function() {
+echo '<p>news page</p>';
+};
+
+$router['newsid'] = function() {
+echo '<p>news page</p>';
+};
+
+$uri = 'newsid';
+
+if(isset($router[$uri])) {
+	$router[$uri]();
 }
-$sql = 'SELECT id, text, title, date from news';
-foreach( $db->query($sql) as $row ) {
-    $json_array[] = $row;
+else {
+	echo '<h1>Error not found</h1>';
 }
-echo json_encode($json_array);
+
 ?>
