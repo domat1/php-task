@@ -63,7 +63,7 @@ function get_news_by_id( $connection, $id ) {
     try {
         $news = $connection->prepare( 'SELECT id, title, date, text FROM news WHERE id=' . sanitize_numbers( $id ) );
         $news->execute();
-        $result = $news->FetchAll( PDO::FETCH_OBJ );
+        $result = $news->FetchAll( PDO::FETCH_ASSOC );
         if ( empty ($result) ) {
             return output( [ 'Error' => 'No results.' ] );
         }
@@ -78,6 +78,7 @@ function get_news_by_id( $connection, $id ) {
         }
     }
 }
+
 function update_news ( $connection, $id, $text, $title, $date )
 {
     $tvoitoid = 15;
@@ -87,6 +88,53 @@ function update_news ( $connection, $id, $text, $title, $date )
     debug_query($query);
     $news->execute();
 }
+
+function ADD_news ($connection)
+{
+    {
+        try {
+
+            {
+                $query = "INSERT INTO news (title, date, text) VALUES(:title, :date, :text)";
+                $news = $connection->prepare($query);
+                $news->execute(array("title" => "Bob", "date" => "2018", "text" => "sexy"));
+            }
+            $result = $news;
+            if ($result != 0) {
+                $result = array('success' => 1);
+                output($result);
+            };
+        }
+        catch (PDOException $e) {
+            if (!$inProduction) {
+                throw new pdoDbException($e);
+            } else {
+                output(['Error occured' => 'Please try again!']);
+            }
+        }
+
+    }
+
+
+}
+Function Delete_news ($connection, $id)
+{
+
+    try {
+        $query = 'DELETE FROM news WHERE id=' . sanitize_numbers( $id );
+        $news = $connection->prepare($query)->execute();
+        debug_request();
+        debug_query($query);
+    }
+    catch (PDOException $e) {
+        if (!$inProduction) {
+            throw new pdoDbException($e);
+        } else {
+            output(['Error occured' => 'Please try again!']);
+        }
+    }
+}
+
 
 
 
@@ -98,7 +146,7 @@ $text = $_POST ['text'];
 
 $id = $_GET['id'];
 
-$benom = get_news_by_id( $connection, $id )
+$benom = Delete_news ($connection, $id);
 
 
 

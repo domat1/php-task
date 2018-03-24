@@ -82,6 +82,23 @@ function post_news_by_id( $connection )
         }
     }
 
+
+    function insert_news_by_id ($connection)
+    {
+        try {
+
+            {
+                $news = $connection->prepare("INSERT INTO news (title, date, text) VALUES(:title, :date, :text)");
+                $news->execute(array("title" => "Bob", "date" => "2018", "text" => "sexy"));
+            }
+            $result = $news;
+            if ($result != 0) {
+                $result = array('success' => 1);
+                output($result);
+            };
+        }
+
+    }
 }
 // Testing
 // $domat = get_news( $connection );
